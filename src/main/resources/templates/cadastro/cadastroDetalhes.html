@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Usuário</title>
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet"
+	href="/materialize/css/materialize.css" media="screen,projection" />
+<link type="text/css" rel="stylesheet"
+	href="/materialize/css/materialize.min.css" media="screen,projection" />
+
+<style type="text/css">
+table.striped>tbody>tr:nth-child(odd) {
+	background-color: rgba(158, 154, 154, 0.5);
+}
+
+form input[type=submit] {
+	color: white;
+}
+</style>
+</head>
+<body>
+	<h3>Cadastro de Detalhes do Usuário</h3>
+
+	<div th:each="p : ${usuarioObj}">
+		<div class="row">
+			<p>
+				Nome: <span th:text="${p.nome}"></span>
+			</p>
+			<p>
+				Sobrenome: <span th:text="${p.sobrenome}"></span>
+			</p>
+			<p>
+				Idade: <span th:text="${p.idade}"></span>
+			</p>
+		</div>
+	</div>
+
+	<h5>Telefones</h5>
+	<div class="row">
+
+		<br /> <br />
+
+		<div th:each="m : ${mensagem}">
+			<span th:text="${m}"></span>
+		</div>
+
+		<form
+			th:action="@{/addDetalheUsuario/{idUsuario}/(idUsuario=${usuarioObj.id})}"
+			method="post" class="col s12"
+			onsubmit="return validarCampos() ? true : false">
+			<div class="row">
+				<div class="input-field col s6">
+					<input type="text" id="numero" name="numero" placeholder="Numero"
+						class="validate" />
+				</div>
+
+				<div class="input-field col s6">
+					<input type="text" id="tipo" name="tipo" placeholder="Tipo"
+						class="validate" />
+				</div>
+
+				<button type="submit" class="waves-effect waves-light btn">Adicionar</button>
+			</div>
+		</form>
+	</div>
+
+	<table class="striped">
+		<tr th:each="detalhe : ${detalhes}">
+			<td th:text="${detalhe.numero}" />
+			<td th:text="${detalhe.tipo}" />
+			<td><a
+				th:href="@{/removerDetalhe/{idDetalhe}/(idDetalhe=${detalhe.id})}">Remover</a></td>
+		</tr>
+	</table>
+
+	<!--JavaScript at end of body for optimized loading-->
+	<script type="text/javascript" src="/materialize/js/materialize.js"></script>
+	<script type="text/javascript" src="/materialize/js/materialize.min.js"></script>
+
+	<script type="text/javascript">
+		function validarCampos() {
+			numero = document.getElementById('numero');
+			tipo = document.getElementById('tipo');
+			
+			if (numero === '') {
+				alert('Numero deve ser informado');
+				return false;
+			
+			} else if (tipo === '') {
+				alert('Tipo deve ser informado');
+				return false;
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>
